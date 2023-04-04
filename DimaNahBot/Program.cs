@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
+using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -25,6 +26,11 @@ Console.WriteLine($"[{DateTime.Now}] Settings saved");
 
 Task HandleErrorsAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
 {
+    botClient.DeleteWebhookAsync(true, cts.Token).Wait();
+    var updates = botClient.GetUpdatesAsync().Result;
+    if (updates.Length > 0)
+    {
+    }
     Console.WriteLine($"[{DateTime.Now}] Error: {exception.Message}");
     return Task.CompletedTask;
 }
