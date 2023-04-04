@@ -13,6 +13,7 @@ var receiverOptions = new ReceiverOptions
     AllowedUpdates = Array.Empty<UpdateType>()
 };
 var frequencies = TryLoadFrequencies();
+var dimaId = long.Parse(System.Configuration.ConfigurationManager.AppSettings["DimaId"]);
 
 botClient.StartReceiving(HandleUpdatesAsync, HandleErrorsAsync, receiverOptions, cts.Token);
 Console.WriteLine($"[{DateTime.Now}] Bot started");
@@ -62,7 +63,7 @@ async Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, Cance
     int rnd = new Random().Next(0, frequency);
     if (rnd == 0)
     {
-        await botClient.SendTextMessageAsync(message.Chat.Id, "діма іди нахуй");
+        await botClient.SendTextMessageAsync(message.Chat.Id, $"[діма](tg://user?id={dimaId}) іди нахуй", parseMode: ParseMode.MarkdownV2);
     }
 }
 
@@ -87,7 +88,7 @@ async Task HandleHelp(Message message, ITelegramBotClient botClient)
 {
     await botClient.SendTextMessageAsync(
         chatId: message.Chat.Id,
-        text: "Діма нахуй бот\n\n" +
+        text: "діма нахуй бот\n\n" +
               "Для зміни частоти введіть /f \\<частота\\> \n `**частота \\- раз на скільки повідомлень я посилатиму діму нахуй \\(100 за замовчуванням\\)**`\n\n" +
               "Для перегляду допомоги введіть /help",
         parseMode: ParseMode.MarkdownV2
