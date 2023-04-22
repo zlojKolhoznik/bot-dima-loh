@@ -27,7 +27,7 @@ Console.WriteLine($"[{DateTime.Now}] Settings saved");
 Task HandleErrorsAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
 {
     botClient.DeleteWebhookAsync(true, cts.Token).Wait();
-    var updates = botClient.GetUpdatesAsync().Result;
+    var updates = botClient.GetUpdatesAsync(cancellationToken: cancellationToken).Result;
     if (updates.Length > 0)
     {
     }
@@ -66,11 +66,11 @@ async Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, Cance
         frequencies.Add(message.Chat.Id, frequency);
     }
 
-    int rnd = new Random().Next(0, frequency);
-    if (rnd == 0)
-    {
-        await botClient.SendTextMessageAsync(message.Chat.Id, $"[діма](tg://user?id={dimaId}) іди нахуй", parseMode: ParseMode.MarkdownV2);
-    }
+    // int rnd = new Random().Next(0, frequency);
+    // if (rnd == 0)
+    // {
+    //     await botClient.SendTextMessageAsync(message.Chat.Id, $"[діма](tg://user?id={dimaId}) іди нахуй", parseMode: ParseMode.MarkdownV2);
+    // }
 }
 
 async Task HandleSetFrequency(Message message1, Dictionary<long, int> dictionary, ITelegramBotClient telegramBotClient)
