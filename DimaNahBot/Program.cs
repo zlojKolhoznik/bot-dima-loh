@@ -25,7 +25,7 @@ internal partial class Program
         {
             AllowedUpdates = Array.Empty<UpdateType>()
         };
-        _botClient = new TelegramBotClient(System.Configuration.ConfigurationManager.AppSettings["DebugBotToken"]);
+        _botClient = new TelegramBotClient(System.Configuration.ConfigurationManager.AppSettings["BotToken"]);
         _frequencies = IOTools.TryLoadFrequencies();
         _calendar = IOTools.TryReadCalendar();
         _dimaId = System.Configuration.ConfigurationManager.AppSettings["DimaId"];
