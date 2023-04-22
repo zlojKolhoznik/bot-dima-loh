@@ -4,7 +4,7 @@ namespace DimaNahBot.Alarms;
 
 public class PreciseAlarm : Alarm
 {
-    public PreciseAlarm(DateTime target, AlarmCallback callback) : base(target, callback)
+    public PreciseAlarm(DateTime target, AlarmCallback callback, object? callbackParam) : base(target, callback, callbackParam)
     {
         _timer.Interval = Second;
     }
@@ -14,7 +14,7 @@ public class PreciseAlarm : Alarm
         var now = DateTime.Now;
         if (now.Hour == Target.Hour && now.Minute == Target.Minute && now.Second == Target.Second)
         {
-            _callback?.Invoke(null);
+            _callback?.Invoke(_callbackParam);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace DimaNahBot.Alarms;
 
 public class DailyAlarm : Alarm
 {
-    public DailyAlarm(DateTime target, AlarmCallback callback) : base(target, callback)
+    public DailyAlarm(DateTime target, AlarmCallback callback, object? callbackParam) : base(target, callback, callbackParam)
     {
         _timer.Interval = Minute;
     }
@@ -14,7 +14,7 @@ public class DailyAlarm : Alarm
         var now = DateTime.Now;
         if (now.Hour == Target.Hour && now.Minute == Target.Minute)
         {
-            _callback?.Invoke(null);
+            _callback?.Invoke(_callbackParam);
         }
     }
 }

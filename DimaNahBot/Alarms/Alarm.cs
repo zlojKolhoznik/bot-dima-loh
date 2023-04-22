@@ -8,13 +8,15 @@ public abstract class Alarm
 {
     protected readonly AlarmCallback? _callback;
     protected readonly System.Timers.Timer _timer;
+    protected readonly object? _callbackParam;
     protected const int Second = 1000;
     protected const int Minute = 60 * Second;
     protected const int Hour = 60 * Minute;
 
-    protected Alarm(DateTime target, AlarmCallback callback)
+    protected Alarm(DateTime target, AlarmCallback callback, object? callbackParam)
     {
         _callback = callback;
+        _callbackParam = callbackParam;
         Target = target;
         _timer = new System.Timers.Timer();
         _timer.Elapsed += Tick;

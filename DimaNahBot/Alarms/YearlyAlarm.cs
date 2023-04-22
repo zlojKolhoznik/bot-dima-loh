@@ -4,7 +4,7 @@ namespace DimaNahBot.Alarms;
 
 public class YearlyAlarm : Alarm
 {
-    public YearlyAlarm(DateTime target, AlarmCallback callback) : base(target, callback)
+    public YearlyAlarm(DateTime target, AlarmCallback callback, object? callbackParam) : base(target, callback, callbackParam)
     {
         _timer.Interval = 24 * Hour;
     }
@@ -14,7 +14,7 @@ public class YearlyAlarm : Alarm
         var now = DateTime.Now;
         if (now.Day == Target.Day && now.Month == Target.Month)
         {
-            _callback?.Invoke(null);
+            _callback?.Invoke(_callbackParam);
         }
     }
 }
