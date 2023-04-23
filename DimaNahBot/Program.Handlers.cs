@@ -50,12 +50,6 @@ partial class Program
             {
                 await hanlder(message, botClient);
             }
-            else
-            {
-                await botClient.SendTextMessageAsync(message.Chat.Id,
-                    $"Невідома команда. Щоб отримати допомогу, напишіть /help або /help@{_botUser.Username}, якщо ви у групі",
-                    cancellationToken: cancellationToken);
-            }
         }
 
         if (!_frequencies.TryGetValue(message.Chat.Id, out var frequency))
