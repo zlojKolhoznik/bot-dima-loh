@@ -15,6 +15,8 @@ public class PreciseAlarm : Alarm
         if (now.Hour == Target.Hour && now.Minute == Target.Minute && now.Second == Target.Second)
         {
             _callback?.Invoke(_callbackParam);
+            Console.WriteLine($"[{DateTime.Today.ToShortDateString()}] alarm has rang");
         }
+        Console.WriteLine($"[{DateTime.Today.ToShortDateString()}] alarm has not rang");
     }
 }
