@@ -6,7 +6,7 @@ namespace DimaNahBot;
 
 partial class Program
 {
-    private static async Task HandleTestTodaysHoliday(Message message, ITelegramBotClient botClient)
+    private static async Task TestTodaysHolidayHandlerAsync(Message message, ITelegramBotClient botClient)
     {
         if (!_calendar.TryGetValue(DateTime.Now.ToString("dd.MM"), out var @params))
         {
@@ -25,13 +25,13 @@ partial class Program
             parseMode: ParseMode.MarkdownV2);
     }
 
-    private static async Task HandleErrorsAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+    private static async Task ErrorsHandlerAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
         await botClient.DeleteWebhookAsync(true, cancellationToken);
         Console.WriteLine($"[{DateTime.Now}] Error: {exception.Message}");
     }
 
-    private static async Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    private static async Task UpdatesHanlderAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         if (update.Type != UpdateType.Message)
         {
@@ -44,7 +44,7 @@ partial class Program
             return;
         }
 
-        if (message.Text.StartsWith("/"))
+        if (message.Text!.StartsWith("/"))
         {
             if (_commands.TryGetValue(message.Text.Split(' ')[0], out var hanlder))
             {
@@ -66,9 +66,9 @@ partial class Program
         }
     }
 
-    private static async Task HandleSetFrequencyAsync(Message message, ITelegramBotClient telegramBotClient)
+    private static async Task SetFrequencyHanlderAsync(Message message, ITelegramBotClient telegramBotClient)
     {
-        if (int.TryParse(message.Text[2..], out int newFrequency) && newFrequency > 0)
+        if (int.TryParse(message.Text![2..], out int newFrequency) && newFrequency > 0)
         {
             if (!_frequencies.TryAdd(message.Chat.Id, newFrequency))
             {
@@ -83,7 +83,7 @@ partial class Program
         }
     }
 
-    private static async Task HandleHelpAsync(Message message, ITelegramBotClient botClient)
+    private static async Task HelpHanlderAsync(Message message, ITelegramBotClient botClient)
     {
         await botClient.SendTextMessageAsync(
             chatId: message.Chat.Id,

@@ -32,8 +32,6 @@ public static class IO
         File.WriteAllText(filePath, JsonConvert.SerializeObject(obj));
     }
     
-    // TODO: Legacy code. Deprecate in next versions.
-
     public static Dictionary<long, int> TryLoadFrequencies()
     {
         return TryReadObject<Dictionary<long, int>>("frequencies.json") ??
