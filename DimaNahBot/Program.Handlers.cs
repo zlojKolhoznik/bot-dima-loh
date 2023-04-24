@@ -68,6 +68,11 @@ partial class Program
 
     private static async Task SetFrequencyHanlderAsync(Message message, ITelegramBotClient telegramBotClient)
     {
+        if (message.From!.Id.ToString() == _dimaId)
+        {
+            await telegramBotClient.SendTextMessageAsync(message.Chat.Id,
+                $"[діма](tg://user?id={_dimaId}) іди нахуй, тобі не можна міняти частоту");
+        }
         if (int.TryParse(message.Text![2..], out int newFrequency) && newFrequency > 0)
         {
             if (!_frequencies.TryAdd(message.Chat.Id, newFrequency))
