@@ -16,6 +16,7 @@ public class YearlyAlarm : Alarm
         {
             Console.WriteLine($"[{DateTime.Today.ToShortDateString()}] alarm has rang");
             _callback?.Invoke(_callbackParam);
+            return;
         }
         Console.WriteLine($"[{DateTime.Today.ToShortDateString()}] alarm has not rang");
     }
