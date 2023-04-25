@@ -1,9 +1,24 @@
-﻿using Newtonsoft.Json;
+﻿using System.Configuration;
+using Newtonsoft.Json;
 
 namespace DimaNahBot;
 
 public static class IO
 {
+    static IO()
+    {
+        if (OperatingSystem.IsLinux())
+        {
+            DataFolderPath = ConfigurationManager.AppSettings["LinuxDataFolderPath"]!;
+        } 
+        else if (OperatingSystem.IsWindows())
+        {
+            DataFolderPath = ConfigurationManager.AppSettings["WindowsDataFolderPath"]!;
+        }
+    }
+    
+    public static string DataFolderPath { get; }
+    
     public static T? TryReadObject<T>(string filePath)
     {
         var fi = new FileInfo(filePath);
@@ -34,7 +49,7 @@ public static class IO
     
     public static Dictionary<long, int> TryLoadFrequencies()
     {
-        return TryReadObject<Dictionary<long, int>>("frequencies.json") ??
+        return TryReadObject<Dictionary<long, int>>($"{DataFolderPath}/frequencies.json") ??
                new Dictionary<long, int>();
     }
 
@@ -45,7 +60,7 @@ public static class IO
 
     public static Dictionary<string, CongratulationParams> TryReadCalendar()
     {
-        return TryReadObject<Dictionary<string, CongratulationParams>>("holidays.json") ??
+        return TryReadObject<Dictionary<string, CongratulationParams>>($"{DataFolderPath}/holidays.json") ??
                new Dictionary<string, CongratulationParams>();
     }
 }
