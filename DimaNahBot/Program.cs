@@ -1,4 +1,5 @@
-﻿using DimaNahBot.Alarms;
+﻿using System.Globalization;
+using DimaNahBot.Alarms;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -38,7 +39,7 @@ internal partial class Program
 
         foreach (var item in _calendar)
         {
-            var alarm = new YearlyAlarm(DateTime.Parse(item.Key), SendCongratulation, item.Value);
+            var alarm = new YearlyAlarm(new DateTime(DateTime.Now.Year, int.Parse(item.Key[3..]), int.Parse(item.Key[..2])), SendCongratulation, item.Value);
             _alarms.Add(alarm);
             alarm.Enable();
         }
