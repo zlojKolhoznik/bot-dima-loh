@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using DimaNahBot.Alarms;
+﻿using DimaNahBot.Alarms;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
