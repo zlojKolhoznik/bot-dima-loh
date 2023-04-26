@@ -11,8 +11,8 @@ public class YearlyAlarm : Alarm
 
     protected override void Tick(object? sender, ElapsedEventArgs args)
     {
-        var now = DateTime.Now;
-        if (now.Day == Target.Day && now.Month == Target.Month)
+        var targetZoneTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _targetTimeZone);
+        if (targetZoneTime.Day == Target.Day && targetZoneTime.Month == Target.Month)
         {
             Console.WriteLine($"[{DateTime.Today.ToShortDateString()}] alarm has rang");
             _callback?.Invoke(_callbackParam);

@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using DimaNahBot.Alarms;
+﻿using DimaNahBot.Alarms;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -25,7 +24,7 @@ internal partial class Program
         {
             AllowedUpdates = Array.Empty<UpdateType>()
         };
-        _botClient = new TelegramBotClient(System.Configuration.ConfigurationManager.AppSettings["DebugBotToken"]!);
+        _botClient = new TelegramBotClient(System.Configuration.ConfigurationManager.AppSettings["BotToken"]!);
         _frequencies = IO.TryLoadFrequencies();
         _calendar = IO.TryReadCalendar();
         _dimaId = System.Configuration.ConfigurationManager.AppSettings["DimaId"]!;
