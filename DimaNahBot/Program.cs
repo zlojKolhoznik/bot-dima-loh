@@ -44,6 +44,12 @@ internal partial class Program
         }
 
         _botClient.StartReceiving(UpdatesHanlderAsync, ErrorsHandlerAsync, receiverOptions, cts.Token);
+        SendCongratulation(new CongratulationParams()
+        {
+            GifId = "CgACAgIAAxkBAAMgZEP9x_ZXfka0uJR_Qtir_Ta4078AAscmAAK58xFKJe7C8aIkYMkvBA",
+            Text =
+                "@Alduin5445, від усієї душі вітаємо тебе з днем праці та солідарності працівників Союзу Радянських Соціалістичних Республік\nБажаємо здійснення усіх комуністичних мрій та виконання всіх п'ятирічок за три роки\\!\n\nРазвивается красное знамя в наших красных сердцах \uD83D\uDEA9\uD83D\uDEA9\uD83D\uDEA9"
+        });
         Console.WriteLine($"[{DateTime.Now}] Bot started");
         Console.ReadLine();
         cts.Cancel();
@@ -59,7 +65,7 @@ internal partial class Program
             return null;
         }
 
-        string chatId = System.Configuration.ConfigurationManager.AppSettings["GroupId"]!;
+        var chatId = long.Parse(System.Configuration.ConfigurationManager.AppSettings["GroupId"]!);
 
         if (!string.IsNullOrEmpty(@params.GifId))
         {
