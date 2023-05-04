@@ -37,13 +37,13 @@ partial class Program
         {
             return;
         }
-
+        
         var message = update.Message!;
         if (message.Type != MessageType.Text)
         {
             return;
         }
-
+        
         if (message.Text!.StartsWith("/"))
         {
             if (_commands.TryGetValue(message.Text.Split(' ')[0], out var hanlder))
@@ -51,13 +51,13 @@ partial class Program
                 await hanlder(message, botClient);
             }
         }
-
+        
         if (!_frequencies.TryGetValue(message.Chat.Id, out var frequency))
         {
             frequency = 100;
             _frequencies.Add(message.Chat.Id, frequency);
         }
-
+        
         int rnd = new Random().Next(0, frequency);
         if (rnd == 0)
         {
