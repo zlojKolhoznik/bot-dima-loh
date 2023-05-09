@@ -66,12 +66,21 @@ partial class Program
         }
     }
 
+    private static async Task SendGifHandlerAsync(Message message, ITelegramBotClient telegramBotClient)
+    {
+        await using var fs = new FileStream("testgif_compressed.gif", FileMode.Open);
+        var file = new InputFile(fs, "anin.gif");
+        await telegramBotClient.SendPhotoAsync(message.Chat.Id, file);
+    }
+
     private static async Task SetFrequencyHanlderAsync(Message message, ITelegramBotClient telegramBotClient)
     {
         if (message.From!.Id.ToString() == _dimaId)
         {
             await telegramBotClient.SendTextMessageAsync(message.Chat.Id,
-                $"[діма](tg://user?id={_dimaId}) іди нахуй, тобі не можна міняти частоту");
+                $"[діма](tg://user?id={_dimaId}) іди нахуй, тобі не можна міняти частоту",
+                parseMode: ParseMode.MarkdownV2);
+            return;
         }
         if (int.TryParse(message.Text![2..], out int newFrequency) && newFrequency > 0)
         {

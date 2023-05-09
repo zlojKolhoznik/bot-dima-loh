@@ -32,7 +32,8 @@ internal partial class Program
         {
             { "/help", HelpHanlderAsync },
             { "/f", SetFrequencyHanlderAsync },
-            { "/testTodaysHoliday", TestTodaysHolidayHandlerAsync }
+            { "/testTodaysHoliday", TestTodaysHolidayHandlerAsync },
+            { "/sendTestGif", SendGifHandlerAsync }
         };
         _alarms = new List<Alarm>();
 
