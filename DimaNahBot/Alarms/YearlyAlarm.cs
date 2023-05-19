@@ -7,6 +7,7 @@ public class YearlyAlarm : Alarm
     public YearlyAlarm(DateTime target, AlarmCallback callback, object? callbackParam) : base(target, callback, callbackParam)
     {
         _timer.Interval = 24 * Hour;
+        Console.WriteLine($"[{DateTime.UtcNow} UTC] alarm for {target.ToShortDateString()} hours has been launched");
     }
 
     protected override void Tick(object? sender, ElapsedEventArgs args)
@@ -14,10 +15,10 @@ public class YearlyAlarm : Alarm
         var targetZoneTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _targetTimeZone);
         if (targetZoneTime.Day == Target.Day && targetZoneTime.Month == Target.Month)
         {
-            Console.WriteLine($"[{DateTime.Today.ToShortDateString()}] alarm has rang");
+            Console.WriteLine($"[{DateTime.UtcNow} UTC] alarm for {Target.ToShortDateString()} has rang");
             _callback?.Invoke(_callbackParam);
             return;
         }
-        Console.WriteLine($"[{DateTime.Today.ToShortDateString()}] alarm has not rang");
+        Console.WriteLine($"[{DateTime.UtcNow} UTC] alarm for {Target.ToShortDateString()} has not rang");
     }
 }
