@@ -58,9 +58,9 @@ public static class IO
         SaveObject(frequencies, "frequencies.json");
     }
 
-    public static Dictionary<string, CongratulationParams> TryReadCalendar()
+    public static Dictionary<string, CongratulationParameters> TryReadCalendar()
     {
-        return TryReadObject<Dictionary<string, CongratulationParams>>($"{DataFolderPath}/holidays.json") ??
-               new Dictionary<string, CongratulationParams>();
+        return TryReadObject<Dictionary<string, CongratulationParameters>>($"{DataFolderPath}/holidays.json") ??
+               new Dictionary<string, CongratulationParameters>();
     }
 }

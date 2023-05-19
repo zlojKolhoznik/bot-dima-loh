@@ -16,9 +16,9 @@ partial class Program
 
         var chatId = long.Parse(System.Configuration.ConfigurationManager.AppSettings["GroupId"]);
         // var chatId = -1001622188493;
-        if (!string.IsNullOrEmpty(@params.GifId))
+        if (!string.IsNullOrEmpty(@params.GifUrl))
         {
-            await _botClient.SendAnimationAsync(chatId, new InputFileId(@params.GifId));
+            await _botClient.SendAnimationAsync(chatId, new InputFileId(@params.GifUrl));
         }
 
         await _botClient.SendTextMessageAsync(chatId, @params.Text,
@@ -68,9 +68,8 @@ partial class Program
 
     private static async Task SendGifHandlerAsync(Message message, ITelegramBotClient telegramBotClient)
     {
-        await using var fs = new FileStream("testgif_compressed.gif", FileMode.Open);
-        var file = new InputFile(fs, "anin.gif");
-        await telegramBotClient.SendPhotoAsync(message.Chat.Id, file);
+        var file = new InputFileUrl("https://drive.google.com/uc?export=download&id=1AG9bnO1ANz0Q-KmbwvYXANC7jDkqW54F");
+        await telegramBotClient.SendAnimationAsync(message.Chat.Id, file);
     }
 
     private static async Task SetFrequencyHanlderAsync(Message message, ITelegramBotClient telegramBotClient)

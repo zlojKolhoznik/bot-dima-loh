@@ -2,9 +2,9 @@
 
 namespace DimaNahBot;
 
-public struct CongratulationParams
+public struct CongratulationParameters
 {
-    [JsonProperty("gifId")] public string GifId { get; set; }
+    [JsonProperty("gifUrl")] public string GifUrl { get; set; }
 
     [JsonProperty("text")] public string Text { get; set; }
 }

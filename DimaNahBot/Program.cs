@@ -11,7 +11,7 @@ public delegate Task CommandHanlder(Message message, ITelegramBotClient botClien
 internal partial class Program
 {
     private static Dictionary<long, int> _frequencies = null!;
-    private static Dictionary<string, CongratulationParams> _calendar = null!;
+    private static Dictionary<string, CongratulationParameters> _calendar = null!;
     private static Dictionary<string, CommandHanlder> _commands = null!;
     private static TelegramBotClient _botClient = null!;
     private static List<Alarm> _alarms = null!;
@@ -36,7 +36,21 @@ internal partial class Program
             { "/sendTestGif", SendGifHandlerAsync }
         };
         _alarms = new List<Alarm>();
+        var calendarActivator = new HourAlarm(new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0), ActivateAlarms, null, 1);
+        calendarActivator.Enable();
+        _alarms.Add(calendarActivator);
 
+        _botClient.StartReceiving(UpdatesHanlderAsync, ErrorsHandlerAsync, receiverOptions, cts.Token);
+        Console.WriteLine($"[{DateTime.UtcNow} UTC] Bot started");
+        Console.ReadLine();
+        cts.Cancel();
+        Console.WriteLine($"[{DateTime.UtcNow} UTC] Bot stopped");
+        IO.SaveFrequencies(_frequencies);
+        Console.WriteLine($"[{DateTime.UtcNow} UTC] Settings saved");
+    }
+
+    private static object? ActivateAlarms(object? param)
+    {
         foreach (var item in _calendar)
         {
             var alarm = new YearlyAlarm(new DateTime(DateTime.Now.Year, int.Parse(item.Key[3..]), int.Parse(item.Key[..2])), SendCongratulation, item.Value);
@@ -44,32 +58,33 @@ internal partial class Program
             alarm.Enable();
         }
 
-        _botClient.StartReceiving(UpdatesHanlderAsync, ErrorsHandlerAsync, receiverOptions, cts.Token);
-        Console.WriteLine($"[{DateTime.Now}] Bot started");
-        Console.ReadLine();
-        cts.Cancel();
-        Console.WriteLine($"[{DateTime.Now}] Bot stopped");
-        IO.SaveFrequencies(_frequencies);
-        Console.WriteLine($"[{DateTime.Now}] Settings saved");
+        return null;
     }
 
-    private static async Task<object?> SendCongratulation(object? parameter)
+    private static async Task<object?> SendCongratulation(object? param)
     {
-        if (parameter is not CongratulationParams @params)
+        if (param is not CongratulationParameters parameters)
         {
             return null;
         }
 
         var chatId = long.Parse(System.Configuration.ConfigurationManager.AppSettings["GroupId"]!);
 
-
-        await _botClient.SendTextMessageAsync(-1001633276034, @params.Text,
-            parseMode: ParseMode.MarkdownV2);
-
-        if (!string.IsNullOrEmpty(@params.GifId))
+        if (!string.IsNullOrEmpty(parameters.GifUrl))
         {
-            await _botClient.SendAnimationAsync(-1001633276034, new InputFileId(@params.GifId));
+            try
+            {
+                await _botClient.SendAnimationAsync(chatId, new InputFileUrl(parameters.GifUrl));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
+        
+        await _botClient.SendTextMessageAsync(chatId, parameters.Text,
+            parseMode: ParseMode.MarkdownV2);
+        
         return null;
     }
 }
